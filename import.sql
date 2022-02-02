@@ -61,6 +61,7 @@ LOAD DATA LOCAL INFILE 'tmp/no-country.txt'
 
 LOAD DATA LOCAL INFILE 'tmp/shapes_all_low.txt'
     INTO TABLE `shapes`
+    IGNORE 1 LINES
     (`geonameid`, `geoJson`);
 
 LOAD DATA LOCAL INFILE 'tmp/timeZones.txt'
