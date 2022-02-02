@@ -39,7 +39,8 @@ CREATE TABLE `alternateNames` (
     `isShortName` BOOLEAN              COMMENT "Short name like 'California' for 'State of California",
     `isColloquial` BOOLEAN             COMMENT "Colloquial or slang term. Example: 'Big Apple' for 'New York'",
     `isHistoric` BOOLEAN               COMMENT "Historic and was used in the past. Example 'Bombay' for 'Mumbai'"
-) CHARACTER SET utf8mb4;
+) CHARACTER SET utf8mb4
+ROW_FORMAT=COMPRESSED;
 
 
 DROP TABLE IF EXISTS  `continentCodes`;
@@ -100,10 +101,11 @@ CREATE TABLE `geoName` (
     `admin4` VARCHAR(20)               COMMENT "4th Level Admin Division",
     `population` BIGINT                COMMENT "Population (8 Byte INT )	",
     `elevation` INT                    COMMENT "Digital elevation model (srtm3)",
-    `gtopo30` INT                      COMMENT "Digital elevation model (gtopo30)",
+    `dem` VARCHAR(30)                  COMMENT "Digital elevation model (gtopo30)",
     `timezone` VARCHAR(40)             COMMENT "IANA timezone id (timeZone.txt)",
     `moddate` DATE                     COMMENT "Date of last modification in yyyy-MM-dd format"
-) CHARACTER SET utf8mb4;
+) CHARACTER SET utf8mb4
+ROW_FORMAT=COMPRESSED;
 
 
 DROP TABLE IF EXISTS  `hierarchy`;
@@ -111,7 +113,8 @@ CREATE TABLE `hierarchy`(
     `parentId` INT UNSIGNED                    COMMENT "Parent ID",
     `childId` INT UNSIGNED                     COMMENT "Child ID",
     `type` CHAR(4)                     COMMENT "The type 'ADM' stands for the admin hierarchy modeled by the admin1-4 codes. The other entries are entered with the user interface."
-) CHARACTER SET utf8mb4;
+) CHARACTER SET utf8mb4
+ROW_FORMAT=COMPRESSED;
 
 
 DROP TABLE IF EXISTS  `isoCurrencys`;

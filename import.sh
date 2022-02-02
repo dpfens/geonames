@@ -41,12 +41,15 @@ cat "$DATA_DIRECTORY/countryInfo.txt" | grep -v "^#" > "$DATA_DIRECTORY/countryI
 
 
 echo "Uploading data to geonames database"
-mysql -u "$username" -p"$password" geonames < import.sql
+mysql -u "$username" -p"$password" geonames --local-infile=1 < import.sql
 
 echo "Applying indices"
 mysql -u "$username" -p"$password" geonames < index.sql
 
 echo "Applying foreign keys"
 mysql -u "$username" -p"$password" geonames < foreign.sql
+
+echo "Applying spatial keys"
+mysql -u "$username" -p"$password" geonames < spatial.sql
 
 rm -r "$DATA_DIRECTORY"

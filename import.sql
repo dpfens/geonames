@@ -4,7 +4,7 @@ LOAD DATA LOCAL INFILE 'tmp/cities500.txt'
     INTO TABLE `geoName`
     (`geonameid`, `name`, `asciiname`, `alternatenames`, `latitude`, `longitude`,
      `fclass`, `fcode`, `country`, `cc2`, `admin1`, `admin2`, `admin3`, `admin4`,
-     `population`, `elevation`, `gtopo30`, `timezone`, `moddate`);
+     `population`, `elevation`, `dem`, `timezone`, `moddate`);
 
 LOAD DATA LOCAL INFILE 'tmp/alternateNamesV2.txt'
     INTO TABLE `alternateNames`
@@ -23,10 +23,9 @@ LOAD DATA LOCAL INFILE 'tmp/adminCode5.txt'
     INTO TABLE `admin5Codes`
     (`code`, `geonameid`);
 
-
 LOAD DATA LOCAL INFILE 'tmp/allCountries.txt'
     INTO TABLE `geoName`
-    (`geonameid`, `name`, `asciiname`, `alternatenames`, `latitude`, `longitude`, `fclass`, `fcode`, `country`, `cc2`, `admin1`, `admin2`, `admin3`, `admin4`, `population`, `elevation`, `gtopo30`, `timezone`, `moddate`);
+    (`geonameid`, `name`, `asciiname`, `alternatenames`, `latitude`, `longitude`, `fclass`, `fcode`, `country`, `cc2`, `admin1`, `admin2`, `admin3`, `admin4`, `population`, `elevation`, `dem`, `timezone`, `moddate`);
 
 LOAD DATA LOCAL INFILE 'continentCodes.txt'
     INTO TABLE `continentCodes`
