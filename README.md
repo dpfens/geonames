@@ -14,3 +14,39 @@ Fetch data from the Geonames [file dump](http://download.geonames.org/export/dum
 ```bash
 bash import.sh <root> <password>
 ```
+
+## Understanding the data
+The primary table is the `GeoNames` table.  The main way I filter that list is using the [Feature Codes](http://www.geonames.org/export/codes.html) in the `fclass` and `fcode` columns.
+
+For example, rows where `fclass='P'` are places (cities, villages, etc.), and rows where `fclass='A'` are administrative/legal places (countries, states, etc.)
+
+## Querying
+
+### Hierarchical Queries
+To fetch the full hierarchy of geonames, use a `WITH RECURSIVE` MySQL statement, also called [Hierarchical Table Traversal](https://dev.mysql.com/doc/refman/8.0/en/with.html#common-table-expressions-recursive-hierarchy-traversal).
+
+
+To fetch all of the geonames a place is within, use the following, where the `placeID` is the `geoNameId` of the place you want the hierarchy for:
+```sql
+WITH RECURSIVE location (id, name, type, fclass, level) AS
+(
+  SELECT geoNameId, name, 'None', geoName.fclass, 1
+    FROM geoName
+    WHERE geoNameId=placeID
+  UNION ALL
+  SELECT geoNameId, geoName.name, hierarchy.type, geoName.fclass, level+1
+    FROM geoName
+    INNER JOIN hierarchy
+    	ON hierarchy.parentId=geoName.geonameid
+    INNER JOIN location
+    	ON location.id=hierarchy.childId
+    WHERE hierarchy.type='ADM'
+)
+SELECT * FROM location ORDER by level
+```
+
+
+To query all geonames that are within a given geoname, use the following query:
+
+```sql
+```
