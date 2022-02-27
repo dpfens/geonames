@@ -1,17 +1,27 @@
-ALTER TABLE geoName
-ADD COLUMN coordinates POINT;
+CREATE TABLE geoNameSpatial (
+  `geonameid` INT UNSIGNED PRIMARY KEY COMMENT "Integer id of record in geonames database",
+  `coordinates` POINT NOT NULL COMMENT "Latitude-Longitude coordinates of record"
+) ROW_FORMAT=COMPRESSED;
 
-UPDATE geoName
-  SET coordinates = ST_GeomFromText(CONCAT('POINT (', latitude, ' ', longitude, ')'), 4326)
-WHERE 1=1;
+INSERT INTO geoNameSpatial (geoNameId, coordinates)
+    SELECT geoName.geoNameId, ST_GeomFromText(CONCAT('POINT (', geoName.latitude, ' ', geoName.longitude, ')'), 4326)
+    FROM geoName
+      LEFT JOIN geoNameSpatial
+        ON geoName.geoNameId=geoNameSpatial.geoNameId
+    WHERE geoNameSpatial.geoNameId is NULL;
 
-CREATE SPATIAL INDEX sx_geonames_coords ON geoName(coordinates);
+CREATE SPATIAL INDEX sx_geonames_coords ON geoNameSpatial(coordinates);
 
-ALTER TABLE `shapes`
-ADD `geom` GEOMETRY;
+CREATE TABLE `shapesSpatial` (
+  `geonameid` INT UNSIGNED PRIMARY KEY COMMENT "Integer id of record in geonames database",
+  `geom` GEOMETRY NOT NULL
+) ROW_FORMAT=COMPRESSED;
 
-UPDATE `shapes`
-  SET geom=ST_GeomFromGeoJSON(geoJson, 1)
-WHERE 1=1;
+INSERT INTO shapesSpatial (geoNameId, geom)
+    SELECT geoName.geoNameId, ST_GeomFromGeoJSON(geoJson, 1)
+    FROM shapes
+      LEFT JOIN shapesSpatial
+        ON shapes.geoNameId=shapesSpatial.geoNameId
+    WHERE shapesSpatial.geoNameId is NULL;
 
-CREATE SPATIAL INDEX sx_shapes_geom ON shapes(geom);
+CREATE SPATIAL INDEX sx_shapes_geom ON shapesSpatial(geom);
