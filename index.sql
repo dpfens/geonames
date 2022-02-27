@@ -1,7 +1,7 @@
 USE geonames;
 
 CREATE INDEX idx_geoname_id
-  ON alternateNames(geonameid);
+  ON alternateNames(geonameid, isPreferredName);
 
 CREATE INDEX idx_isolanguage
   ON alternateNames(isoLanguage);
@@ -60,8 +60,8 @@ CREATE INDEX idx_admin2
 CREATE INDEX idx_latitude_longitude
   ON geoName(latitude, longitude);
 
-CREATE INDEX idx_hierarchy
-  ON hierarchy(parentId, childId);
+CREATE UNIQUE INDEX ux_hierarchy
+  ON hierarchy(type, childId, parentId);
 
 CREATE INDEX idx_iso639_2
   ON isoLanguages(iso639_2);
