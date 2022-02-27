@@ -39,6 +39,13 @@ unzip "$DATA_DIRECTORY/shapes_all_low.zip" -d "$DATA_DIRECTORY"
 
 cat "$DATA_DIRECTORY/countryInfo.txt" | grep -v "^#" > "$DATA_DIRECTORY/countryInfo-n.txt"
 
+MYSQLVERSION=$(mysql --version|awk '{ print $3 }'|awk -F\, '{ print $1 }')
+
+if [[ "$MYSQLVERSION" = 8* ]]
+then
+  # Fix shape file for Mysql 8.0
+  sed -i -e 's/-180/-179.999/g' "$DATA_DIRECTORY/shapes_all_low.txt"
+fi
 
 echo "Uploading data to geonames database"
 mysql -u "$username" -p"$password" geonames --local-infile=1 < import.sql
