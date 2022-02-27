@@ -1,5 +1,7 @@
 USE `geonames`;
 
+SET GLOBAL local_infile=1;
+
 LOAD DATA LOCAL INFILE 'tmp/cities500.txt'
     INTO TABLE `geoName`
     (`geonameid`, `name`, `asciiname`, `alternatenames`, `latitude`, `longitude`,
@@ -71,3 +73,5 @@ LOAD DATA LOCAL INFILE 'tmp/timeZones.txt'
 LOAD DATA LOCAL INFILE 'tmp/userTags.txt'
     INTO TABLE `userTags`
     (`geonameid`, `tag`);
+
+SET GLOBAL local_infile=0;
