@@ -9,3 +9,4 @@ username="$1"
 password="$2"
 
 mysql -u "$username" -p"$password" < geonames.sql
+mysql -u "$username" -p"$password" < geonames_spatial.sql
