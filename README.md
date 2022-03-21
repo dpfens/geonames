@@ -15,6 +15,9 @@ Fetch data from the Geonames [file dump](http://download.geonames.org/export/dum
 bash import.sh <root> <password>
 ```
 
+### Daily Modifications
+Schedule the `daily_update.sh` script to run every day to process the `modifications-YYYY-MM-DD.txt` file of updates to the `geoNames` table;
+
 ## Understanding the data
 The primary table is the `GeoNames` table.  The main way I filter that list is using the [Feature Codes](http://www.geonames.org/export/codes.html) in the `fclass` and `fcode` columns.
 

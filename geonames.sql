@@ -105,7 +105,7 @@ CREATE TABLE `geoName` (
     `timezone` VARCHAR(40)             COMMENT "IANA timezone id (timeZone.txt)",
     `moddate` DATE                     COMMENT "Date of last modification in yyyy-MM-dd format"
 ) CHARACTER SET utf8mb4
-ROW_FORMAT=COMPRESSED;
+ROW_FORMAT=DYNAMIC;
 
 
 DROP TABLE IF EXISTS  `hierarchy`;
