@@ -41,6 +41,11 @@ cat "$DATA_DIRECTORY/countryInfo.txt" | grep -v "^#" > "$DATA_DIRECTORY/countryI
 
 MYSQLVERSION=$(mysql --version|awk '{ print $3 }'|awk -F\, '{ print $1 }')
 
+if [[ "$MYSQLVERSION" = 8* ]]
+ then
+ sed -i -e 's/-180/-179.99999999999/g' "$DATA_DIRECTORY/shapes_all_low.txt"
+fi
+
 echo "Uploading data to geonames database"
 mysql -u "$username" -p"$password" geonames --local-infile=1 < import.sql
 
@@ -50,14 +55,12 @@ mysql -u "$username" -p"$password" geonames < index.sql
 echo "Applying foreign keys"
 mysql -u "$username" -p"$password" geonames < foreign.sql
 
-echo "Applying spatial keys"
+echo "Transforming into spatial data"
 if [[ "$MYSQLVERSION" = 8* ]]
 then
   mysql -u "$username" -p"$password" geonames < import_spatial_mysql8.sql
 else
   mysql -u "$username" -p"$password" geonames < import_spatial_mysql5.sql
 fi
-
-mysql -u "$username" -p"$password" geonames < spatial.sql
 
 rm -r "$DATA_DIRECTORY"
