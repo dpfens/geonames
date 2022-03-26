@@ -51,6 +51,9 @@ CREATE INDEX idx_country
 CREATE INDEX idx_timezone
   ON geoName(timezone);
 
+CREATE INDEX idx_fclass
+  ON geoName(fclass);
+
 CREATE INDEX idx_admin1
   ON geoName(admin1);
 

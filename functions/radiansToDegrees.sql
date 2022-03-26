@@ -1,0 +1,13 @@
+DELIMITER //
+
+CREATE FUNCTION radiansToDegrees ( radians DOUBLE)
+RETURNS DOUBLE
+DETERMINISTIC
+
+BEGIN
+   DECLARE deg1 DOUBLE;
+   SET deg1 = 180.0 / PI();
+   RETURN radians * deg1;
+END; //
+
+DELIMITER ;
